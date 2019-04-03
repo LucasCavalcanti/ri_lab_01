@@ -21,6 +21,13 @@ class OantagonistaSpider(scrapy.Spider):
         #
         # inclua seu código aqui
         #
+        for quote in response.css('div.container-post-home'):
+            yield {
+                'title': quote.css('a.article_link h2::text').get(),
+                'date': quote.css('a.article_link span time::text').get(),
+                'section': quote.css('a.article_link span span::text').get(),
+                'text': quote.css('a.article_link p::text').get()
+            }
         page = response.url.split("/")[-2]
         filename = 'quotes-%s.html' % page
         with open(filename, 'wb') as f:
